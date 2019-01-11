@@ -19,7 +19,7 @@ from sendMQ import stringJsonMsg
 #   query1     :    data to each song
 #   query2     :    list of costumers data with quentity
 #   query3     :    domain in each country
-#   query4     :    songs woth the word 'black' in it
+#   query4     :    songs with the word 'black' in it
 #   query5     :    for each country how many disck/albums sold
 #   query6     :    most selling disk/album in each country
 #   query7     :    the most selling album in the US
