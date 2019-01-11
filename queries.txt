@@ -1,5 +1,5 @@
 ========
-QUERY 1:
+QUERY 1:data to each song
 select tracks.Name as "SongName",
 artists.Name as "Artist",
 genres.Name as "Genre"
@@ -10,7 +10,7 @@ join genres on genres.GenreId = tracks.GenreId
 where genres.GenreId!=18 and genres.GenreId!=19 and genres.GenreId!=20 and genres.GenreId!=21 and genres.GenreId!=22 
 order by tracks.Name
 ========
-QUERY 2:
+QUERY 2:list of costumers data with quentity
 select Name,
 Phone,
 Email,
@@ -30,7 +30,7 @@ group by invoices.CustomerId
 order by Name
 )
 ========
-QUERY 3:
+QUERY 3:domain in each country
 select Country,
 Domain,
 count(Full_data) as "Amount" 
@@ -45,10 +45,10 @@ order by Country
 domain_status 
 group by Full_data
 ========
-QUERY 4:
+QUERY 4:songs with the word 'black' in it
 select distinct Name from tracks where instr(Name,'Black') >0
 ========
-QUERY 5:
+QUERY 5:for each country how many disck/albums sold
 select Country,
 Title,
 count(Full_data) as "AmountOfAlbums" 
@@ -66,7 +66,7 @@ join genres on genres.GenreId = tracks.GenreId
 where genres.GenreId!=18 and genres.GenreId!=19 and genres.GenreId!=20 and genres.GenreId!=21 and genres.GenreId!=22 order by BillingCountry)amount_of_albums 
 group by Full_data
 ========
-QUERY 6:
+QUERY 6:most selling disk/album in each country
 select Country,
 Title,
 max(Amount_of_albums) as "MostSelling" 
@@ -89,7 +89,7 @@ group by Full_data
 ) 
 group by Country
 ========
-QUERY 7:
+QUERY 7:the most selling album in the US
 select BillingCountry as "Country"
 ,Title as "AlbumName",
 max(Amount_of_albums) as "MaxAmount" 
