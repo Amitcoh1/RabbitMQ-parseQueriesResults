@@ -1,0 +1,115 @@
+========
+QUERY 1:
+select tracks.Name as "SongName",
+artists.Name as "Artist",
+genres.Name as "Genre"
+from tracks
+join albums on albums.AlbumId = tracks.AlbumId 
+join artists on artists.ArtistId = albums.ArtistId 
+join genres on genres.GenreId = tracks.GenreId 
+where genres.GenreId!=18 and genres.GenreId!=19 and genres.GenreId!=20 and genres.GenreId!=21 and genres.GenreId!=22 
+order by tracks.Name
+========
+QUERY 2:
+select Name,
+Phone,
+Email,
+Quantity, 
+CASE when Address IS NULL THEN "NO-VALUE" ELSE Address end as "Address" 
+from
+(
+select customers.FirstName ||" "||customers.LastName as "Name",
+customers.Phone,
+customers.Email,
+customers.Address||"-"||customers.City||","||customers.Country||"-"||customers.State as "Address",
+count(invoice_items.Quantity) as "Quantity" 
+from customers 
+join invoices on invoices.CustomerId = customers.CustomerId 
+join invoice_items on invoice_items.InvoiceId = invoices.InvoiceId 
+group by invoices.CustomerId 
+order by Name
+)
+========
+QUERY 3:
+select Country,
+Domain,
+count(Full_data) as "Amount" 
+from
+( 
+select Country,
+Country||" "||replace(substr(Email, instr(Email, '@') + 1),ltrim(substr(Email, instr(Email, '@') + 1),replace(substr(Email, instr(Email, '@') + 1), '.', '')),'') as "Full_data",
+replace(substr(Email, instr(Email, '@') + 1),ltrim(substr(Email, instr(Email, '@') + 1),replace(substr(Email, instr(Email, '@') + 1), '.', '')),'') as "Domain" 
+from customers 
+order by Country
+)
+domain_status 
+group by Full_data
+========
+QUERY 4:
+select distinct Name from tracks where instr(Name,'Black') >0
+========
+QUERY 5:
+select Country,
+Title,
+count(Full_data) as "AmountOfAlbums" 
+from 
+(
+select BillingCountry as "Country",
+albums.Title,
+BillingCountry||" "||albums.Title as "Full_data" 
+from invoices 
+join invoice_items on invoice_items.InvoiceId = invoices.InvoiceId 
+join playlist_track on playlist_track.TrackId = invoice_items.TrackId 
+join tracks on tracks.TrackId = playlist_track.TrackId 
+join albums on albums.AlbumId = tracks.AlbumId 
+join genres on genres.GenreId = tracks.GenreId 
+where genres.GenreId!=18 and genres.GenreId!=19 and genres.GenreId!=20 and genres.GenreId!=21 and genres.GenreId!=22 order by BillingCountry)amount_of_albums 
+group by Full_data
+========
+QUERY 6:
+select Country,
+Title,
+max(Amount_of_albums) as "MostSelling" 
+from(
+select Country,
+Title,
+count(Full_data) as "Amount_of_albums" 
+from 
+(
+select BillingCountry as "Country",
+albums.Title,
+BillingCountry||" "||albums.Title as "Full_data" 
+from invoices 
+join invoice_items on invoice_items.InvoiceId = invoices.InvoiceId 
+join playlist_track on playlist_track.TrackId = invoice_items.TrackId 
+join tracks on tracks.TrackId = playlist_track.TrackId 
+join albums on albums.AlbumId = tracks.AlbumId 
+order by BillingCountry)amount_of_albums 
+group by Full_data
+) 
+group by Country
+========
+QUERY 7:
+select BillingCountry as "Country"
+,Title as "AlbumName",
+max(Amount_of_albums) as "MaxAmount" 
+from(
+select BillingCountry,
+Title,
+count(Full_data) as "Amount_of_albums" from
+(
+select BillingCountry,
+InvoiceDate,
+Title,
+BillingCountry||" "||albums.Title as "Full_data" 
+from invoices 
+join invoice_items on invoice_items.InvoiceId = invoices.InvoiceId 
+join playlist_track on playlist_track.TrackId = invoice_items.TrackId 
+join tracks on tracks.TrackId = playlist_track.TrackId join albums on albums.AlbumId = tracks.AlbumId 
+where like('usa',BillingCountry)=1 and InvoiceDate between datetime('2010-01-01 00:00:00') and datetime('now') 
+order by BillingCountry
+) 
+group by Full_data 
+order by Amount_of_albums desc
+)
+========
