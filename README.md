@@ -8,6 +8,8 @@ The formats are : JSON , XML , CSV , DB-TABLE
 
 ## Getting Started
 
+In order to test this code , please open a new project and import all the .py files.
+In addition, replace the DB-PATH to your own.
 
 ### Prerequisites
 
